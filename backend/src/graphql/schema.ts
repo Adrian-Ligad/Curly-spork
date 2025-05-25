@@ -4,7 +4,7 @@ export const typeDefs = gql`
   type Organization {
     id: ID!
     name: String!
-    description: String
+    slug: String!
     users: [User!]!
     roles: [Role!]!
     shifts: [Shift!]!
@@ -20,7 +20,6 @@ export const typeDefs = gql`
     metadata: JSON
     organization: Organization!
     users: [User!]!
-    lastUpdated: String!
     createdAt: String!
     updatedAt: String!
   }
@@ -30,9 +29,14 @@ export const typeDefs = gql`
   type User {
     id: ID!
     email: String!
-    name: String!
-    role: Role!
+    auth0Id: String!
+    firstName: String!
+    lastName: String!
+    isActive: Boolean!
+    isAdmin: Boolean!
+    permissions: [String!]!
     organization: Organization!
+    role: Role
     shifts: [Shift!]!
     createdAt: String!
     updatedAt: String!
@@ -42,7 +46,7 @@ export const typeDefs = gql`
     id: ID!
     startTime: String!
     endTime: String!
-    user: User!
+    user: User
     organization: Organization!
     createdAt: String!
     updatedAt: String!
@@ -50,7 +54,7 @@ export const typeDefs = gql`
 
   input CreateOrganizationInput {
     name: String!
-    description: String
+    slug: String!
   }
 
   input CreateRoleInput {
@@ -58,7 +62,7 @@ export const typeDefs = gql`
     description: String
     wage: Float!
     metadata: JSON
-    organizationId: ID!
+    orgId: ID!
   }
 
   input UpdateRoleInput {
@@ -70,16 +74,29 @@ export const typeDefs = gql`
 
   input CreateUserInput {
     email: String!
-    name: String!
-    roleId: ID!
-    organizationId: ID!
+    auth0Id: String!
+    firstName: String!
+    lastName: String!
+    roleId: ID
+    orgId: ID!
+    isAdmin: Boolean
+    permissions: [String!]
+  }
+
+  input UpdateUserInput {
+    firstName: String
+    lastName: String
+    roleId: ID
+    isActive: Boolean
+    isAdmin: Boolean
+    permissions: [String!]
   }
 
   input CreateShiftInput {
     startTime: String!
     endTime: String!
-    userId: ID!
-    organizationId: ID!
+    userId: ID
+    orgId: ID!
   }
 
   type Query {
@@ -95,6 +112,7 @@ export const typeDefs = gql`
     # User queries
     users(organizationId: ID!): [User!]!
     user(id: ID!): User
+    me: User
 
     # Shift queries
     shifts(organizationId: ID!): [Shift!]!
@@ -113,7 +131,7 @@ export const typeDefs = gql`
 
     # User mutations
     createUser(input: CreateUserInput!): User!
-    updateUser(id: ID!, input: CreateUserInput!): User!
+    updateUser(id: ID!, input: UpdateUserInput!): User!
     deleteUser(id: ID!): User!
 
     # Shift mutations

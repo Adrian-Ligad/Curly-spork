@@ -1,0 +1,85 @@
+type User {
+  id: ID!
+  email: String!
+  auth0Id: String!
+  firstName: String!
+  lastName: String!
+  isActive: Boolean!
+  isAdmin: Boolean!
+  permissions: [String!]!
+  organization: Organization!
+  role: Role
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Organization {
+  id: ID!
+  name: String!
+  slug: String!
+  users: [User!]!
+  roles: [Role!]!
+  shifts: [Shift!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RegisterUserInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  orgId: String!
+}
+
+input CreateOrganizationInput {
+  name: String!
+  adminEmail: String!
+  adminPassword: String!
+  adminFirstName: String!
+  adminLastName: String!
+}
+
+input CreateUserInput {
+  email: String!
+  auth0Id: String!
+  firstName: String!
+  lastName: String!
+  orgId: String!
+  roleId: String
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  roleId: String
+  isActive: Boolean
+  isAdmin: Boolean
+  permissions: [String!]
+}
+
+type Query {
+  me: User!
+  userByAuth0Id(auth0Id: String!): User
+  organization: Organization!
+}
+
+type Mutation {
+  login(input: LoginInput!): AuthPayload!
+  registerUser(input: RegisterUserInput!): User!
+  createOrganization(input: CreateOrganizationInput!): Organization!
+  logout: Boolean!
+  createUser(input: CreateUserInput!): User!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+  deleteUser(id: ID!): Boolean!
+}

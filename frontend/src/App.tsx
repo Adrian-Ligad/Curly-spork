@@ -5,6 +5,7 @@ import Navbar from "./shared-components/Navbar";
 import Dashboard from "./pages/dashboard";
 import Schedule from "./pages/schedule";
 import Users from "./pages/users";
+import Roles from "./pages/roles";
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Dashboard />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/roles" element={<Roles />} />
         </Routes>
       </Container>
     </Box>

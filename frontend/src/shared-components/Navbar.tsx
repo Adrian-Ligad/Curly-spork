@@ -19,6 +19,9 @@ const Navbar: React.FC = () => {
           <Button color="inherit" component={RouterLink} to="/users">
             Users
           </Button>
+          <Button color="inherit" component={RouterLink} to="/roles">
+            Roles
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>

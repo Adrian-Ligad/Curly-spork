@@ -7,24 +7,56 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Organization {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  users       User[]
+  roles       Role[]
+  shifts      Shift[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Role {
+  id             String       @id @default(uuid())
+  name           String
+  description    String?
+  wage           Float
+  metadata       Json?        @default("{}")
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  users          User[]
+  lastUpdated    DateTime     @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([name, organizationId])
+}
+
 model User {
-  id        String     @id @default(uuid())
-  email     String     @unique
-  name      String
-  role      Role       @default(NURSE)
-  shifts    Shift[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id             String       @id @default(uuid())
+  email          String       @unique
+  name           String
+  role           Role         @relation(fields: [roleId], references: [id])
+  roleId         String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  shifts         Shift[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model Shift {
-  id        String   @id @default(uuid())
-  startTime DateTime
-  endTime   DateTime
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String       @id @default(uuid())
+  startTime      DateTime
+  endTime        DateTime
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 enum Role {

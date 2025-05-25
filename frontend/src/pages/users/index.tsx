@@ -1,6 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
-import UserList from "./components/UserList";
+import { Typography, Paper } from "@mui/material";
 
 const Users: React.FC = () => {
   return (
@@ -8,7 +7,11 @@ const Users: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Users
       </Typography>
-      <UserList />
+      <Paper sx={{ p: 2 }}>
+        <Typography variant="body1">
+          User management interface will be implemented here.
+        </Typography>
+      </Paper>
     </div>
   );
 };

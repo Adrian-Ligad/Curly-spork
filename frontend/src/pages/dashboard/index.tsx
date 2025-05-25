@@ -1,7 +1,5 @@
 import React from "react";
-import { Typography, Grid } from "@mui/material";
-import TodaySchedule from "./components/TodaySchedule";
-import StaffOverview from "./components/StaffOverview";
+import { Typography, Paper, Grid } from "@mui/material";
 
 const Dashboard: React.FC = () => {
   return (
@@ -11,10 +9,16 @@ const Dashboard: React.FC = () => {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <TodaySchedule />
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Recent Schedules</Typography>
+            {/* Add schedule summary content here */}
+          </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
-          <StaffOverview />
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Staff Overview</Typography>
+            {/* Add staff overview content here */}
+          </Paper>
         </Grid>
       </Grid>
     </div>
